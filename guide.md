@@ -229,7 +229,7 @@ Place the device in bootloader mode by running:
 **Flash the necessary partitions**
 
 `$ sudo fastboot flash boot out/target/product/bullhead/boot.img`  
-`$ sudo fastboot flash system outarget/product/bullhead/system.img`  
+`$ sudo fastboot flash system out/target/product/bullhead/system.img`  
 `$ sudo fastboot flash vendor out/target/product/bullhead/vendor.img`
 
 Reboot the phone
@@ -361,11 +361,11 @@ After the download completes, navigate to the folder containing the twrp.img dow
 
 If you made any changes to the phone since the original flash, re-flash the images:
 
-`$ sudo fastboot flash boot boot.img`  
-`$ sudo fastboot flash system system.img`  
-`$ sudo fastboot flash vendor vendor.img`  
-`$ sudo fastboot flash userdata userdata.img`  
-`$ sudo fastboot flash cache cache.img`  
+`$ sudo fastboot flash boot out/target/product/bullhead/boot.img`  
+`$ sudo fastboot flash system out/target/product/bullhead/system.img`  
+`$ sudo fastboot flash vendor out/target/product/bullhead/vendor.img`  
+`$ sudo fastboot flash userdata out/target/product/bullhead/userdata.img`  
+`$ sudo fastboot flash cache out/target/product/bullhead/cache.img`  
 
 Then reboot the phone
 
