@@ -27,21 +27,22 @@ https://overthewire.org/wargames/bandit/
 You have basic knowledge of how Git works, if not I recommend the book Git Pro which you can download as a free Ebook from:
 https://git-scm.com/book/en/v2
 
+## Hardware/Software Prerequisites
+* Has to be Ubuntu or some Linux distro, no Windows (Mac can work but this guide is written for Ubuntu)
+* You can probably do it with 500G of hard drive space but I would go for 1TB so you aren't cutting it too close
+* You can do it all with 8Gib of RAM but if you can get 16Gib or more that would be ideal
+* Save yourself from a huge headache and make sure you have a proper USB cable for your phone, not some weiner cable from the nearest gas station.
 
 ## Setting Up a Build Environment
 
 Main documentation: https://source.android.com/setup/start
 
-Hardware requirements: At least 500 Gib of extra space and at least 8 Gib of RAM but 16 is best (and an ethernet connection if possible but it’s not necessary)
-
-Software requirements:
-You’ll need either Ubuntu or some version of a Mac OS to do all of this, Windows aka Borg is a no-go. The documentation on the site says the main version supported right now is Ubuntu 14, however I started with Ubuntu 14 and because it’s so outdated a lot of issues came up (especially with $ repo sync) and I eventually moved to Ubuntu 18 (I wouldn’t recommend using 20 which also did not work for me because of certain default packages installed.)
+The documentation on the site says the main version of Ubuntu supported right now is Ubuntu 14, however I started with Ubuntu 14 and because it’s so outdated a lot of issues came up (especially with $ repo sync) and I eventually moved to Ubuntu 18 (I wouldn’t recommend using 20 which also did not work for me because of certain default packages installed.)
 
 You can do the following to get Ubuntu 18 installed on your system:
 
 Download Ubuntu 18 ISO and create bootable usb
-Load Ubuntu 18 onto computer and install
-
+Load Ubuntu 18 onto computer VIA usb and install the OS
 
 With Ubuntu 18 installed and running, start by applying necessary updates to the OS if they don’t prompt you to run them automatically:
 
