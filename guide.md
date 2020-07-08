@@ -12,7 +12,7 @@ Tuesday, June 16, 2020
 * Smali Logging
 * Useful adb Commands
 
-## Assumptions:
+## Assumptions
 You have basic knowledge of navigating a Linux computer VIA a terminal, aka you recognize most of the commands on the list like:
 `$ cd`
 `$ cat`
@@ -102,7 +102,6 @@ Now for the big download of the Android source tree (> 1 hr)
 `$ repo sync`
 
 NOTE: This step also adds the .repo file in your WORKING_DIRECTORY (use $ls -a from your WORKING_DIRECTORY to see it) which contains the ‘Manifest’ file (not the same as the Manifest.xml file for apps) which you’ll modify later to include Google Mobile Services.
-
 
 NOTE for Ubuntu 14 users: Often there are problems with this step since it is such a big download. I kept getting a "error TCP unexpected length" and "remote end hung up unexpectedly" and mostly issues receiving packets. Apparently this can be the cause of a problem with window scaling in the networking protocol. Window scaling is turned ON by default in linux (net.ipv4.tcp_window_scaling=1) and what can sometimes happen is that a router can rewrite the window scale TCP option on SYN packets as they pass through, with some being set to a scale factor of zero while leaving the option in place. The receiving side sees the option, and responds with a window scale factor of its own, and at this point the initiating system believes that its scale factor has been accepted and scales its window accordingly. The other end, however, believes that the scale factor is zero. The result is a misunderstanding over the real size of the receive window, with the system behind the router believing it to be much smaller than it really is. The expected scale factor is large, and the result is at best very slow communication. In many cases the small window can cause no packets to be transmitted at all, breaking TCP between the two affected systems entirely. 
 
