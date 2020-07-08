@@ -260,30 +260,9 @@ recovery.img, ramdisk-recovery.img
 
 Main reference: https://github.com/opengapps/opengapps
 
-NOTE: You can either install GApps via a ZIP with some software called TWRP or you can build your own GApps through the git repo. Since the repo itself gives TWRP as an option I’m less apprehensive about using it and am therefore choosing to go that route for simplicities sake.
+NOTE: You can either install GApps with a download from the above link or you can build your own GApps through the git repo.
 
-Make sure the phone is in developer mode and that USB debugging is enabled:
-
-https://www.howtogeek.com/129728/how-to-access-the-developer-options-menu-and-enable-usb-debugging-on-android-4.2/
-
-Download and install custom recovery tool “TWRP” so that you can install GApps:
-(ref: https://www.xda-developers.com/how-to-install-twrp/)
-
-To download, go to https://twrp.me/ and click on the first link that says “Released” at the end, then you can pick your phone/build after that.
-
-I’m going to use the “Fastboot Install Method” since I don’t have a proper browser set up on the phone yet, meaning I click on the “Primary (Americas)” under “Download Links” and select the image at the top of the list.
-
-After the download completes, navigate to the folder via your terminal:
-
-`$ cd ~/Downloads/TWRP`
-
-**Then install TWRP via adb and fastboot**
-
-`$ sudo adb reboot bootloader`
-`$ sudo fastboot flash recovery twrp.img`
-`$ sudo fastboot reboot`
-
-**Download or Build GApps**
+**Download or Build GApps through the git repo**
 
 To check which type of architecture the phone is on use the following adb command:
 
@@ -291,7 +270,38 @@ To check which type of architecture the phone is on use the following adb comman
 
 Based on the following guide: https://developer.android.com/ndk/guides/abis the first line tells me its aarch64 or arm64
 
-Trying to use just download the ZIP from opengapps.org and install it VIA TWRP it would always say the install succeeded for me but once I rebooted the phone nothing appeared to be installed. I also tried VIA regular recovery to use “apply update from ADB” with the “adb sideload <filename>” command and I always got an error “Failed to find META-INF/com/android/metadata in update package, after a day and a half of trying a million different ways of doing this I decided to clone the repo and make my ‘own’ GApps:
+For the APK level I found this list, posted here for your convenience:
+
+Platform Version   API Level
+Android 9.0        28
+Android 8.1        27
+Android 8.0        26
+**Android 7.1        25**
+Android 7.0        24
+Android 6.0        23
+Android 5.1        22
+Android 5.0        21
+Android 4.4W       20
+Android 4.4        19
+Android 4.3        18
+Android 4.2        17
+Android 4.1        16
+Android 4.0.3      15
+Android 4.0        14
+Android 3.2        13
+Android 3.1        12
+Android 3.0        11
+Android 2.3.3      10
+Android 2.3        9
+Android 2.2        8
+Android 2.1        7
+Android 2.0.1      6
+Android 2.0        5
+Android 1.6        4
+Android 1.5        3
+Android 1.1        2
+Android 1.0        1
+
 
 `$ mkdir gapps`
 `$ cd gapps`
@@ -301,27 +311,59 @@ Trying to use just download the ZIP from opengapps.org and install it VIA TWRP i
 `$ sudo apt-get install lzip`
 `$ make arm64-25-micro`
 
-Copy resulting ZIP to Download folder of phone (you can do this by plugging the phone into the computer, and click on the notification that says “USB charging this device \n Tap for more options.” 
-Then choose the third option “Transfer files”.
-A window should pop up on your computer, and you’ll see a disk icon called “internal storage”, double click to enter and you’ll see some folders like “Download”, “Music”, etc, just copy and paste the ZIP alongside these folders.
+**Download and install custom recovery tool “TWRP” so that you can install GApps**
+(ref: https://www.xda-developers.com/how-to-install-twrp/)
+
+To download, go to https://twrp.me/ and click on the "Devices" link at the top right, then you can pick your phone/build.
+
+I’m going to use the “Fastboot Install Method”, meaning I click on the “Primary (Americas)” under “Download Links” and select the image at the top of the list.
+
+After the download completes, navigate to the folder containing the twrp.img download via your terminal:
+
+`$ cd ~/Downloads`
+
+**Install TWRP via adb and fastboot**
+
+`$ sudo adb reboot bootloader`
+`$ sudo fastboot flash recovery twrp.img`
+`$ sudo fastboot reboot`
+
+**Flash everything**
+
+If you made any changes to the phone since the original flash, re-flash the images:
+
+`$ sudo fastboot flash boot boot.img`
+`$ sudo fastboot flash system system.img`
+
+`$ sudo fastboot flash vendor vendor.img`
+`$ sudo fastboot flash userdata userdata.img`
+`$ sudo fastboot flash cache cache.img`
+
+Then reboot the phone
+
+`$ sudo fastboot reboot`
+
+**Remount the /system Partition**
+FYI I first tried mounting system via the original recovery AND via TWRP, neither succeeded. So without this step, my setup would confirm GApps was installed, but nothing would appear on the phone, aka this is the only way I discovered to properly mount the system partition.
+
+`$ adb root`
+`$ adb disable-verity`
+`$ adb reboot`
+`$ adb root`
+`$ adb remount`
+
+**Install the GApps ZIP**
 
 Boot into TWRP by booting into recovery, meaning:
 `$ sudo adb reboot bootloader`
 
-Use the volume buttons to scroll options to “recovery mode”, and when you get to it press the power button to enter. TWRP will load.
+Use the volume buttons to scroll options to “recovery mode”, and when you get to it press the power button to enter. TWRP will eventually load.
 
-**Install the GApps ZIP**
+Chose "Advanced", then "adb sideload", check off both wipe dalvik and cache boxes, then on your computer in the directory where your opengapps zip is sitting (by default it will be in the "out" folder of your opengapps git repo) run the following command to load and install the ZIP:
 
-Chose install, then scroll to the bottom to your ZIP and choose it, then swipe to install (don’t worry about the warning)
+`$ adb sideload open_gapps-arm64-7.1-micro-20200706-UNOFFICIAL.ZIP`
 
-Once complete choose “wipe Dalvik/cache” then after that choose “Reboot”. Once the phone reboots you should see the Google apps on the phone.
-
-STILL TESTING THIS -- Now reset the userdata.img and cache.img:
-
-`$ sudo adb reboot bootloader`
-`$ sudo fastboot flash userdata out/target/product/bullhead/userdata.img`
-`$ sudo fastboot flash cache out/target/product/bullhead/cache.img`
-`$ sudo fastboot reboot`
+Now choose “Reboot”; once complete you should see the Google apps on the phone.
 
 Now set up phone with bogus Google account
 
@@ -331,12 +373,10 @@ Results:
 -Started downloading Google Calendar
 -When installing my app (adb install -g myapp.apk) for the first time it asked if I wanted to send the app for scanning, obviously I said NO)
 
-// installed earlier version of app
-`$ apktool b apk_folder -o unsignedapp.apk`
-`$ signapk /certifcate.pem /key.pk8 unsignedapp.apk signedapp.apk`
-`$ sudo adb install -r signedapp.apk`
-
 ## Adding Log Lines to the Phone
+
+Make sure the phone is in developer mode and that USB debugging is enabled:
+https://www.howtogeek.com/129728/how-to-access-the-developer-options-menu-and-enable-usb-debugging-on-android-4.2/
 
 The way logs are set up in Android is simple, for each log there is a TAG which is just a string representing a name, the log message (another string), and a letter indicating the log “level” (ie information, error, warning, etc). This structure is as follows:
 
@@ -440,6 +480,11 @@ Note: Package manager install method:
 `$ adb shell pm install APK_FILE`
 `$ adb shell pm uninstall com.example.MyApp`
 
+
+// installed earlier version of app
+`$ apktool b apk_folder -o unsignedapp.apk`
+`$ signapk /certifcate.pem /key.pk8 unsignedapp.apk signedapp.apk`
+`$ sudo adb install -r signedapp.apk`
 
 ## Other Useful Logcat Commands
 
