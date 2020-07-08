@@ -63,7 +63,7 @@ Download and install fastboot and adb (android debugging bridge)
 
 Configure git with your info
 
-`$ git config --global user.name "Your Name”`
+`$ git config --global user.name "Your Name”`  
 `$ git config --global user.email "you@example.com"`
 
 Create bin directory (for linking, etc)
@@ -80,13 +80,13 @@ More info for Mac users: https://mycyberuniverse.com/create-personal-bin-directo
 
 **Install the Repo tool and ensure its executable**
 
-`$ curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo`
-
+`$ curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo`  
 `$ chmod a+x ~/bin/repo`
+
 
 Initialize an empty directory to be your working directory for your Android build and navigate into it
 
-`$ mkdir WORKING_DIRECTORY`
+`$ mkdir WORKING_DIRECTORY`  
 `$ cd WORKING_DIRECTORY`
 
 Run the repo init command in your new working directory to get the latest version of the Android repo you want. You can (and probably should) specify a branch for a particular build. In my case I chose the newest version of Android Nougat for the Nexus 5x:
@@ -134,7 +134,7 @@ Where
 
 Download both links (ZIPs) and extract the .sh scripts from the zips and place them in your WORKING_DIRECTORY. Then navigate into the resulting folders and run the scripts with ./ aka:
 
-`$ ./extract-lge-bullhead.sh`
+`$ ./extract-lge-bullhead.sh`  
 `$ ./extract-qcom-bullhead.sh`
 
 and accept the license agreements. (NOTE: if you find it’s exiting before you get a chance to type “I ACCEPT” press the space bar instead of the enter button through “reading” the license). 
@@ -188,7 +188,7 @@ NOTE: It is best to COPY and PASTE the line above because when I tried just typi
 
 Then restart the jack server:
 
-`$ prebuilts/sdk/tools/jack-admin kill-server`
+`$ prebuilts/sdk/tools/jack-admin kill-server`  
 `$ prebuilds/sdk/tools/jack-admin start-server`
 
 Then try the make again
@@ -209,7 +209,7 @@ followed by the make command again
 
 Once you get a successful make message, checkout a local branch of frameworks/base from your WORKING_DIRECTORY:
 
-`$ cd frameworks/base`
+`$ cd frameworks/base`  
 `$ git checkout -b fworks_dev`
 
 (where fworks_dev is just a name I made up)
@@ -228,8 +228,8 @@ Place the device in bootloader mode by running:
 
 **Flash the necessary partitions**
 
-`$ sudo fastboot flash boot out/target/product/bullhead/boot.img`
-`$ sudo fastboot flash system outarget/product/bullhead/system.img`
+`$ sudo fastboot flash boot out/target/product/bullhead/boot.img`  
+`$ sudo fastboot flash system outarget/product/bullhead/system.img`  
 `$ sudo fastboot flash vendor out/target/product/bullhead/vendor.img`
 
 Reboot the phone
@@ -273,43 +273,72 @@ Based on the following guide: https://developer.android.com/ndk/guides/abis the 
 For the APK level I found this list, posted here for your convenience:
 
 Platform Version   API Level
+
 Android 9.0        28
+
 Android 8.1        27
+
 Android 8.0        26
+
 **Android 7.1        25**
+
 Android 7.0        24
+
 Android 6.0        23
+
 Android 5.1        22
+
 Android 5.0        21
+
 Android 4.4W       20
+
 Android 4.4        19
+
 Android 4.3        18
+
 Android 4.2        17
+
 Android 4.1        16
+
 Android 4.0.3      15
+
 Android 4.0        14
+
 Android 3.2        13
+
 Android 3.1        12
+
 Android 3.0        11
+
 Android 2.3.3      10
+
 Android 2.3        9
+
 Android 2.2        8
+
 Android 2.1        7
+
 Android 2.0.1      6
+
 Android 2.0        5
+
 Android 1.6        4
+
 Android 1.5        3
+
 Android 1.1        2
+
 Android 1.0        1
 
 
-`$ mkdir gapps`
-`$ cd gapps`
-`$ git clone https://github.com/opengapps/opengapps.git`
-`$ cd opengapps`
-`$ ./download_sources.sh --shallow arm64`
-`$ sudo apt-get install lzip`
-`$ make arm64-25-micro`
+
+`$ mkdir gapps`  
+`$ cd gapps`  
+`$ git clone https://github.com/opengapps/opengapps.git`  
+`$ cd opengapps`  
+`$ ./download_sources.sh --shallow arm64`  
+`$ sudo apt-get install lzip`  
+`$ make arm64-25-micro`  
 
 **Download and install custom recovery tool “TWRP” so that you can install GApps**
 (ref: https://www.xda-developers.com/how-to-install-twrp/)
@@ -324,20 +353,19 @@ After the download completes, navigate to the folder containing the twrp.img dow
 
 **Install TWRP via adb and fastboot**
 
-`$ sudo adb reboot bootloader`
-`$ sudo fastboot flash recovery twrp.img`
-`$ sudo fastboot reboot`
+`$ sudo adb reboot bootloader`  
+`$ sudo fastboot flash recovery twrp.img`  
+`$ sudo fastboot reboot`  
 
 **Flash everything**
 
 If you made any changes to the phone since the original flash, re-flash the images:
 
-`$ sudo fastboot flash boot boot.img`
-`$ sudo fastboot flash system system.img`
-
-`$ sudo fastboot flash vendor vendor.img`
-`$ sudo fastboot flash userdata userdata.img`
-`$ sudo fastboot flash cache cache.img`
+`$ sudo fastboot flash boot boot.img`  
+`$ sudo fastboot flash system system.img`  
+`$ sudo fastboot flash vendor vendor.img`  
+`$ sudo fastboot flash userdata userdata.img`  
+`$ sudo fastboot flash cache cache.img`  
 
 Then reboot the phone
 
@@ -346,11 +374,11 @@ Then reboot the phone
 **Remount the /system Partition**
 FYI I first tried mounting system via the original recovery AND via TWRP, neither succeeded. So without this step, my setup would confirm GApps was installed, but nothing would appear on the phone, aka this is the only way I discovered to properly mount the system partition.
 
-`$ adb root`
-`$ adb disable-verity`
-`$ adb reboot`
-`$ adb root`
-`$ adb remount`
+`$ adb root`  
+`$ adb disable-verity`  
+`$ adb reboot`  
+`$ adb root`  
+`$ adb remount`  
 
 **Install the GApps ZIP**
 
@@ -400,13 +428,13 @@ Add a log line to one of the java code files in frameworks/base/services/core/ja
 
 After saving the files you need to re-make the changed files and then re-flash the image. This all comes down to Android.mk files. From the root WORKING_DIRECTORY
 
-`$ sudo adb devices`
-`$ . build/envsetup.sh`
-`$ lunch`
-`$ mmm frameworks/base/services`
-`$ make snod`
-`$ sudo adb reboot bootloader`
-`$ sudo fastboot flash system out/target/product/bullhead/system.img`
+`$ sudo adb devices`  
+`$ . build/envsetup.sh`  
+`$ lunch`  
+`$ mmm frameworks/base/services`  
+`$ make snod`  
+`$ sudo adb reboot bootloader`  
+`$ sudo fastboot flash system out/target/product/bullhead/system.img`  
 `$ sudo fastboot reboot`
 
 
@@ -451,9 +479,9 @@ Navigate into the resulting folder
 Add log lines to desired smali files, ie:
 
 
-`move-result-object v0`
-`const-string v1, "MYTAG read input stream "`
-`invoke-static {v1, v0}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I`
+`move-result-object v0`  
+`const-string v1, "MYTAG read input stream "`  
+`invoke-static {v1, v0}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I`  
 
 Save your changes and navigate back to the root folder of myapk where the android manifest, apktool.yml, and etc live. Now re-package the apk:
 
@@ -477,13 +505,13 @@ then just delete the app (simply uninstall it) from the phone and try again.
 
 Note: Package manager install method:
 
-`$ adb shell pm install APK_FILE`
-`$ adb shell pm uninstall com.example.MyApp`
+`$ adb shell pm install APK_FILE`  
+`$ adb shell pm uninstall com.example.MyApp`  
 
 
 // installed earlier version of app
-`$ apktool b apk_folder -o unsignedapp.apk`
-`$ signapk /certifcate.pem /key.pk8 unsignedapp.apk signedapp.apk`
+`$ apktool b apk_folder -o unsignedapp.apk`  
+`$ signapk /certifcate.pem /key.pk8 unsignedapp.apk signedapp.apk`  
 `$ sudo adb install -r signedapp.apk`
 
 ## Other Useful Logcat Commands
@@ -518,22 +546,22 @@ where ActivityManager represents the TAG name, the I is the log level (info) and
 
 For recording an integer value
 
-`const-string v8, "log-tag"`
-`invoke-static {v1}, Ljava/lang/String;->valueOf(I)Ljava/lang/String;`
-`move-result-object v9`
+`const-string v8, "log-tag"`  
+`invoke-static {v1}, Ljava/lang/String;->valueOf(I)Ljava/lang/String;`  
+`move-result-object v9`  
 `invoke-static {v8, v9}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)`
 
 For recording an exception (they can take time to display the full message in logcat)
 
-`const-string v3, “logTag classFile lineNo “`
-`const-string v4, “Exception “`
+`const-string v3, “logTag classFile lineNo “`  
+`const-string v4, “Exception “`   
 `invoke-static {v8, v4, v0}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I`
 
 For reading a returned string
 
 // command which returns a string
-`move-result-object v0`
-`const-string v1, "MyTag read input stream "`
+`move-result-object v0`  
+`const-string v1, "MyTag read input stream "`  
 `invoke-static {v1, v0}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I`
 
 Start a script session in the terminal:
