@@ -393,13 +393,15 @@ Chose "Advanced", then "adb sideload", check off both wipe dalvik and cache boxe
 
 Now choose “Reboot”; once complete you should see the Google apps on the phone.
 
-Now set up phone with bogus Google account
+**Set up phone with bogus Google account**
 
-Results:
--Started downloading Google Play Store
--Email from Google Community Team saying my account comes with access to Google products, apps, and services
--Started downloading Google Calendar
+Results:  
+-Started downloading Google Play Store  
+-Email from Google Community Team saying my account comes with access to Google products, apps, and services  
+-Started downloading Google Calendar  
 -When installing my app (adb install -g myapp.apk) for the first time it asked if I wanted to send the app for scanning, obviously I said NO)
+
+Note: To remove GApps, flash userdata.img then cache.img
 
 ## Adding Log Lines to the Phone
 
