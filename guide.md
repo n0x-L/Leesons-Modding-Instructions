@@ -101,12 +101,11 @@ Now for the big download of the Android source tree (> 1 hr)
 
 `$ repo sync`
 
-NOTE: This step also adds the .repo file in your WORKING_DIRECTORY (use $ls -a from your WORKING_DIRECTORY to see it) which contains the ‘Manifest’ file (not the same as the Manifest.xml file for apps) which you’ll modify later to include Google Mobile Services.
+NOTE: This step also adds the .repo file in your WORKING_DIRECTORY (use $ls -a from your WORKING_DIRECTORY to see it) which contains the ‘Manifest’ file (not the same as the Manifest.xml file for apps) which you may modify later for various reasons (not included in this guide).
 
-NOTE for Ubuntu 14 users: `$ sudo sysctl -w net.ipv4.tcp_window_scaling=0`
-May be a solution to turn off window scaling (a reboot of the system will reset it to being on). Explanation:
+NOTE "error TCP unexpected length" fix for Ubuntu 14 users: `$ sudo sysctl -w net.ipv4.tcp_window_scaling=0`
+May be a solution to turn off window scaling (a reboot of the system will reset it to being on) if the sync is failing on you. Explanation:
 Often there are problems with this step since it is such a big download. I kept getting a "error TCP unexpected length" and "remote end hung up unexpectedly" and mostly issues receiving packets. Apparently this can be the cause of a problem with window scaling in the networking protocol. Window scaling is turned ON by default in linux (net.ipv4.tcp_window_scaling=1) and what can sometimes happen is that a router can rewrite the window scale TCP option on SYN packets as they pass through, with some being set to a scale factor of zero while leaving the option in place. The receiving side sees the option, and responds with a window scale factor of its own, and at this point the initiating system believes that its scale factor has been accepted and scales its window accordingly. The other end, however, believes that the scale factor is zero. The result is a misunderstanding over the real size of the receive window, with the system behind the router believing it to be much smaller than it really is. The expected scale factor is large, and the result is at best very slow communication. In many cases the small window can cause no packets to be transmitted at all, breaking TCP between the two affected systems entirely. 
-
 
 then again run repo sync but with an option -j1:
 
@@ -138,7 +137,7 @@ Download both links (ZIPs) and extract the .sh scripts from the zips and place t
 
 and accept the license agreements. (NOTE: if you find it’s exiting before you get a chance to type “I ACCEPT” press the space bar instead of the enter button through “reading” the license). 
 
-The scripts should have created a “vendor” folder, which means you can safely delete the .sh scripts in the WORKING_DIRECTORY which set up folders in the new vendor folder.
+The scripts should have created a “vendor” folder, which means you can safely delete the .sh scripts in the WORKING_DIRECTORY which set up driver folders in the new vendor folder.
 
 ## Creating the Build
 
@@ -150,7 +149,7 @@ From your WORKING_DIRECTORY initialize the tools for building by running:
 
 `$ lunch`
 
-and choose your build by typing in the corresponding number that appears next to the name and hitting enter.
+and choose your build by typing in the corresponding number that appears next to the name you want and hitting enter.
 
 
 To enable the use of ccache, all you need to do is make sure that the USE_CCACHE environment variable is set to 1 before you start your build:
